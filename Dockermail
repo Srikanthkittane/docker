@@ -1,0 +1,23 @@
+FROM ubuntu:20.04
+RUN apt-get  update
+RUN apt-get install -q -y ssmtp mailutils
+
+# root is the person who gets all mail for userids < 1000
+RUN echo "root=yourAdmin@email.com" >> /etc/ssmtp/ssmtp.conf
+
+# Here is the gmail configuration (or change it to your private smtp server)
+RUN echo "mailhub=smtp.gmail.com:587" >> /etc/ssmtp/ssmtp.conf
+RUN echo "AuthUser=srikanthkn6@gmail.com" >> /etc/ssmtp/ssmtp.conf
+RUN echo "AuthPass=mjtwapdijglsrfad" >> /etc/ssmtp/ssmtp.conf
+
+RUN echo "UseTLS=YES" >> /etc/ssmtp/ssmtp.conf
+RUN echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
+
+RUN apt install -y git 
+WORKDIR /gitpractice
+RUN git clone https://github.com/Srikanthkittane/Srikanthkittane.git
+RUN chmod -R 777 Srikanthkittane
+CMD ["Srikanthkittane/arith.sh","20","30"]
+CMD /bin/echo "script executed" | mail -s "success" kavana1491@gmail.com
+# Set up php sendmail config
+#RUN echo "sendmail_path=sendmail -i -t" >> /usr/local/etc/php/conf.d/php-sendmail.ini
